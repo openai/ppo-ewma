@@ -1,93 +1,38 @@
 **Status:** Archive (code is provided as-is, no updates expected)
 
-# Phasic Policy Gradient
+# PPO-EWMA
 
-#### [[Paper]](https://arxiv.org/abs/2009.04416)
+#### [ [Paper] ](https://arxiv.org/abs/2110.00641)
 
-This is code for training agents using [Phasic Policy Gradient](https://arxiv.org/abs/2009.04416) [(citation)](#citation).
+This is code for training agents using PPO-EWMA and PPG-EWMA, introduced in the paper [Batch size-invariance for policy optimization](https://arxiv.org/abs/2110.00641) ([citation](#citation)). It is based on the code for [Phasic Policy Gradient](https://github.com/openai/phasic-policy-gradient).
 
-Supported platforms:
+## Installation
 
-- macOS 10.14 (Mojave)
-- Ubuntu 16.04
+Supported platforms: MacOS and Ubuntu, Python 3.7
 
-Supported Pythons:
-
-- 3.7 64-bit
-
-## Install
-
-You can get miniconda from https://docs.conda.io/en/latest/miniconda.html if you don't have it, or install the dependencies from [`environment.yml`](environment.yml) manually.
+Installation using [Miniconda](https://docs.conda.io/en/latest/miniconda.html):
 
 ```
-git clone https://github.com/openai/phasic-policy-gradient.git
-conda env update --name phasic-policy-gradient --file phasic-policy-gradient/environment.yml
-conda activate phasic-policy-gradient
-pip install -e phasic-policy-gradient
+git clone https://github.com/openai/ppo-ewma.git
+conda env update --name ppo-ewma --file ppo-ewma/environment.yml
+conda activate ppo-ewma
+pip install -e ppo-ewma
 ```
 
-## Reproduce and Visualize Results
+Alternatively, install the dependencies from [`environment.yml`](environment.yml) manually.
 
-PPG with default hyperparameters (results/ppg-runN):
+## Visualize results
 
+Results are stored in blob storage at `https://openaipublic.blob.core.windows.net/rl-batch-size-invariance/`, and can be visualized as in the paper using [this Colab notebook](https://colab.research.google.com/github/openai/ppo-ewma/blob/master/notebooks/rl_batch_size_invariance.ipynb).
+
+## Citation
+
+Please cite using the following BibTeX entry:
 ```
-mpiexec -np 4 python -m phasic_policy_gradient.train
-python -m phasic_policy_gradient.graph --experiment_name ppg
-```
-
-PPO baseline (results/ppo-runN):
-
-```
-mpiexec -np 4 python -m phasic_policy_gradient.train --n_epoch_pi 3 --n_epoch_vf 3 --n_aux_epochs 0 --arch shared
-python -m phasic_policy_gradient.graph --experiment_name ppo
-```
-
-PPG, varying E_pi (results/e-pi-N):
-
-```
-mpiexec -np 4 python -m phasic_policy_gradient.train --n_epoch_pi N
-python -m phasic_policy_gradient.graph --experiment_name e_pi
-```
-
-PPG, varying E_aux (results/e-aux-N):
-
-```
-mpiexec -np 4 python -m phasic_policy_gradient.train --n_aux_epochs N
-python -m phasic_policy_gradient.graph --experiment_name e_aux
-```
-
-PPG, varying N_pi (results/n-pi-N):
-
-```
-mpiexec -np 4 python -m phasic_policy_gradient.train --n_pi N
-python -m phasic_policy_gradient.graph --experiment_name n_pi
-```
-
-PPG, using L_KL instead of L_clip (results/ppgkl-runN):
-
-```
-mpiexec -np 4 python -m phasic_policy_gradient.train --clip_param 0 --kl_penalty 1
-python -m phasic_policy_gradient.graph --experiment_name ppgkl
-```
-
-PPG, single network variant (results/ppgsingle-runN):
-
-```
-mpiexec -np 4 python -m phasic_policy_gradient.train --arch detach
-python -m phasic_policy_gradient.graph --experiment_name ppg_single_network
-```
-
-Pass `--normalize_and_reduce` to compute and visualize the mean normalized return with `phasic_policy_gradient.graph`.
-
-# Citation
-
-Please cite using the following bibtex entry:
-
-```
-@article{cobbe2020ppg,
-  title={Phasic Policy Gradient},
-  author={Cobbe, Karl and Hilton, Jacob and Klimov, Oleg and Schulman, John},
-  journal={arXiv preprint arXiv:2009.04416},
-  year={2020}
+@article{hilton2021batch,
+  title={Batch size-invariance for policy optimization},
+  author={Hilton, Jacob and Cobbe, Karl and Schulman, John},
+  journal={arXiv preprint arXiv:2110.00641},
+  year={2021}
 }
 ```
